@@ -244,7 +244,7 @@ class SerializacaoXML(Serializacao):
         # Lei da transparencia
         # Tributos aprox por item
         if produto_servico.valor_tributos_aprox:
-            etree.SubElement(imposto, 'vTotTrib').text = produto_servico.valor_tributos_aprox
+            etree.SubElement(imposto, 'vTotTrib').text = str('{:.2f}').format(produto_servico.valor_tributos_aprox)
 
         ### ICMS
         icms = etree.SubElement(imposto, 'ICMS')
@@ -495,7 +495,7 @@ class SerializacaoXML(Serializacao):
                     nota_fiscal.transporte_transportadora,
                     retorna_string=False,
                     ))
-                
+
             # Veículo
             if nota_fiscal.transporte_veiculo_placa and nota_fiscal.transporte_veiculo_uf:
                 veiculo = etree.SubElement(transp, 'veicTransp')
@@ -570,8 +570,6 @@ class SerializacaoXML(Serializacao):
         # timezone Brasília -03:00
         tz = time.strftime("%z")
         tz = "{}:{}".format(tz[:-2], tz[-2:])
-        #import ipdb
-        #ipdb.set_trace()
         raiz = etree.Element(tag_raiz, versao='1.00', xmlns=NAMESPACE_NFE)
         e = etree.SubElement(raiz, 'infEvento', Id=evento.identificador)
         etree.SubElement(e, 'cOrgao').text = CODIGOS_ESTADOS[evento.uf.upper()]

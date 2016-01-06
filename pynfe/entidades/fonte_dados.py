@@ -14,11 +14,11 @@ class FonteDados(object):
             self._objetos = objetos
         else:
             self._objetos = []
-    
+
     def carregar_objetos(self, **kwargs):
         u"""Método responsavel por retornar os objetos que casem com os atributos
         informados no argumento **kwargs (argumentos nomeados).
-        
+
         Um argumento especial é o '_classe', que representa a classe da entidade
         desejada.
 
@@ -65,10 +65,10 @@ class FonteDados(object):
     def remover_objeto(self, _objeto=None, **kwargs):
         u"""Método responsavel por remover os objetos que casem com os atributos
         informados no argumento **kwargs (argumentos nomeados).
-        
+
         Um argumento especial é o '_classe', que representa a classe da entidade
         desejada.
-        
+
         Outro argumetno especial é o '_objeto', que representa o objeto a ser
         removido. Caso o argumento _objeto seja uma lista de objetos, eles serão
         removidos também."""
@@ -100,20 +100,20 @@ class FonteDados(object):
         u"""Faz a ponte para o método 'carregar_objetos' mas obriga o retorno de
         apenas um objeto, levantando exceção se nenhum for encontrado ou se forem
         encontrados mais de um."""
-        
+
         lista = self.carregar_objetos(**kwargs)
-        
+
         if len(lista) == 0:
             raise NenhumObjetoEncontrado('Nenhum objeto foi encontrado!')
         elif len(lista) > 1:
             raise MuitosObjetosEncontrados('Muitos objetos foram encontrados!')
 
         return lista[0]
-    
+
     def obter_lista(self, **kwargs):
         u"""Método de proxy, que somente repassa a chamada ao metodo 'carregar_objetos'"""
         return self.carregar_objetos(**kwargs)
-    
+
     def contar_objetos(self, **kwargs):
         u"""Método que repassa a chamada ao metodo 'carregar_objetos' mas retorna
         somente a quantidade de objetos encontrados."""
@@ -124,7 +124,8 @@ class FonteDados(object):
             return len(self._objetos)
 
     def limpar_dados(self):
-        self._objetos.clear()
+        # self._objetos.clear()
+        pass
 
 # Instancia da fonte de dados default
 _fonte_dados = FonteDados()

@@ -53,7 +53,7 @@ CARACTERS_ACENTUADOS = {
 
 # @memoize
 def normalizar_municipio(municipio):
-    if not isinstance(municipio, str):
+    if isinstance(municipio, str):
         municipio = municipio.decode('utf-8')
 
     return municipio.lower().translate(CARACTERS_ACENTUADOS).upper()
