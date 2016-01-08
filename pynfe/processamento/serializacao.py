@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import time
+import base64
+import hashlib
 from pynfe.entidades import NotaFiscal
 from pynfe.utils import etree, so_numeros, obter_municipio_por_codigo, \
     obter_pais_por_codigo, obter_municipio_e_codigo, formatar_decimal, \
     remover_acentos, obter_uf_por_codigo, obter_codigo_por_municipio
-from pynfe.utils.flags import CODIGOS_ESTADOS, VERSAO_PADRAO, NAMESPACE_NFE
+from pynfe.utils.flags import CODIGOS_ESTADOS, VERSAO_PADRAO, NAMESPACE_NFE, VERSAO_QRCODE
+from pynfe.utils.webservices import NFCE
 
 
 class Serializacao(object):
@@ -20,6 +23,7 @@ class Serializacao(object):
     _contingencia = None    # Justificativa da entrada em contingência (min 20, max 256 caracteres)
     _so_cpf = False         # Destinatário com apenas o cpf do cliente
     _nome_aplicacao = 'PyNFe'
+    _homologacao = False
 
     def __new__(cls, *args, **kwargs):
         if cls == Serializacao:
@@ -32,6 +36,7 @@ class Serializacao(object):
         self._ambiente = homologacao and 2 or 1
         self._contingencia = contingencia
         self._so_cpf = so_cpf
+        self._homologacao = homologacao
 
     def exportar(self, destino, **kwargs):
         """Gera o(s) arquivo(s) de exportacao a partir da Nofa Fiscal eletronica
@@ -66,10 +71,8 @@ class SerializacaoXML(Serializacao):
                 raiz.append(self._serializar_nota_fiscal(nf, retorna_string=False))
                 # Grupo de informaçoes suplementares NT2015.002
                 # Somente para NFC-e
-                # if nf.modelo == 65:
-                #     info = etree.Element('infNFeSupl')
-                #     etree.SubElement(info, 'qrCode').text = ''
-                #     raiz.append(info)
+                if nf.modelo == 65:
+                    raiz.append(self._serializar_url_qrcode(nf, retorna_string=False))
 
             if retorna_string:
                 return etree.tostring(raiz, encoding="unicode", pretty_print=False)
@@ -86,6 +89,62 @@ class SerializacaoXML(Serializacao):
         SEFAZ e Receita Federal."""
 
         raise Exception('Metodo nao implementado')
+
+    def _serializar_url_qrcode(self, nota_fiscal, tag_raiz='infNFeSupl', retorna_string=True):
+        raiz = etree.Element(tag_raiz)
+
+        data = base64.b16encode(nota_fiscal.data_emissao.isoformat()).decode()
+        digest = base64.b16encode(digest).decode()
+
+        try:
+            cpf = nota_fiscal.emitente.numero_documento
+        except:
+            cpf = None
+
+        if cpf is None:
+            url = 'chNFe={}&nVersao={}&tpAmb={}&dhEmi={}&vNF={}&vICMS={}&digVal={}&cIdToken={}'.format(
+                   nota_fiscal.nota_fiscal.identificador_unico.replace('NFe', ''),
+                   VERSAO_QRCODE,
+                   self._ambiente,
+                   data.lower(),
+                   nota_fiscal.valor_total_nota,
+                   nota_fiscal.valor_icms,
+                   digest.lower(),
+                   nota_fiscal.emitente.token)
+        else:
+            url = 'chNFe={}&nVersao={}&tpAmb={}&cDest={}&dhEmi={}&vNF={}&vICMS={}&digVal={}&cIdToken={}'.format(
+                   nota_fiscal.nota_fiscal.identificador_unico.replace('NFe', ''),
+                   VERSAO_QRCODE,
+                   self._ambiente,
+                   cpf,
+                   data.lower(),
+                   nota_fiscal.totais_icms_total_nota,
+                   nota_fiscal.totais_icms_total,
+                   digest.lower(),
+                   nota_fiscal.emitente.token)
+
+        url_hash = hashlib.sha1(url.encode()+nota_fiscal.emitente.csc.encode()).digest()
+        url_hash = base64.b16encode(url_hash).decode()
+
+        url = url + '&cHashQRCode=' + url_hash.upper()
+
+        if nota_fiscal.uf.upper() == 'PR':
+            url_qrcode = NFCE[nota_fiscal.uf.upper()]['QR'] + url
+        else:
+            if self._homologacao:
+                url_qrcode = NFCE[nota_fiscal.uf.upper()]['HOMOLOGACAO'] +\
+                    NFCE[nota_fiscal.uf.upper()]['QR'] + url
+            else:
+                url_qrcode = NFCE[nota_fiscal.uf.upper()]['HTTPS'] +\
+                    NFCE[nota_fiscal.uf.upper()]['QR'] + url
+
+        print url_qrcode
+        etree.SubElement(raiz, 'qrCode').text = "<![CDATA[%s]]>" % (url_qrcode)
+
+        if retorna_string:
+            return etree.tostring(raiz, encoding="unicode", pretty_print=True)
+        else:
+            return raiz
 
     def _serializar_emitente(self, emitente, tag_raiz='emit', retorna_string=True):
         raiz = etree.Element(tag_raiz)

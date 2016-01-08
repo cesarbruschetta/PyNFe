@@ -61,5 +61,11 @@ class Emitente(Entidade):
     # Logotipo
     logotipo = None
 
+    # Token SeFaz
+    token = str()
+
+    # CSC SeFaz (token)
+    csc = str()
+
     def __str__(self):
         return self.cnpj

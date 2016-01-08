@@ -35,6 +35,7 @@ def obter_pais_por_codigo(codigo):
 CAMINHO_DATA = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), '..', 'data')
 CAMINHO_MUNICIPIOS = os.path.join(CAMINHO_DATA, 'MunIBGE')
+
 CARACTERS_ACENTUADOS = {
     ord(u'á'): u'a',
     ord(u'â'): u'a',
@@ -92,7 +93,13 @@ def carregar_arquivo_municipios(uf, reverso=False):
 # @memoize
 def obter_codigo_por_municipio(municipio, uf):
     # TODO: fazer UF ser opcional
-    municipios = carregar_arquivo_municipios(uf, True)
+    try:
+        municipios = carregar_arquivo_municipios(uf, True)
+    except:
+        # Tratar se a UF eh uma sigla
+        codigo_uf = flags.CODIGOS_ESTADOS.get(uf)
+        municipios = carregar_arquivo_municipios(codigo_uf, True)
+
     return municipios[normalizar_municipio(municipio)]
 
 
