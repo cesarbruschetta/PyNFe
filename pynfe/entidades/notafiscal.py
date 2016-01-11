@@ -18,6 +18,9 @@ from decimal import Decimal
 class NotaFiscal(Entidade):
     status = NF_STATUS[0]
 
+    # ID da nota fiscal
+    nfe_id = str()
+
     # Código numérico aleatório que compõe a chave de acesso
     codigo_numerico_aleatorio = str()
 
@@ -416,7 +419,8 @@ class NotaFiscal(Entidade):
                 'tpEmis': str(self.forma_emissao),
                 'cNF': self._codigo_numerico_aleatorio(),
                 }
-        return "NFe%(uf)s%(ano)s%(mes)s%(cnpj)s%(mod)s%(serie)s%(nNF)s%(tpEmis)s%(cNF)s%(cDV)s"%{
+
+        Id =  "NFe%(uf)s%(ano)s%(mes)s%(cnpj)s%(mod)s%(serie)s%(nNF)s%(tpEmis)s%(cNF)s%(cDV)s"%{
                 'uf': CODIGOS_ESTADOS[self.uf],
                 'ano': self.data_emissao.strftime('%y'),
                 'mes': self.data_emissao.strftime('%m'),
@@ -428,6 +432,9 @@ class NotaFiscal(Entidade):
                 'cNF': str(self.codigo_numerico_aleatorio),
                 'cDV': self._dv_codigo_numerico(key),
                 }
+
+        self.nfe_id = Id
+        return Id
 
 class NotaFiscalReferenciada(Entidade):
     # - Tipo (seleciona de lista) - NF_REFERENCIADA_TIPOS
@@ -906,7 +913,7 @@ class NotaFiscalEntregaRetirada(Entidade):
     endereco_telefone = str()
 
 class NotaFiscalServico(Entidade):
-    
+
     # id do rps
     identificador = str()
     # tag competencia

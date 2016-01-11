@@ -141,7 +141,7 @@ IPI_TIPOS_CALCULO = (
 
 PIS_TIPOS_TRIBUTACAO = (
     ('01', 'PIS 01 - Operação Tributável - Base de cálculo = valor da operação alíquota normal (cumulativo/não cumulativo)'),
-    ('02', 'PIS 02 - Operação Tributável - Base de cálculo = valor da operação (alíquota diferenciada)'), 
+    ('02', 'PIS 02 - Operação Tributável - Base de cálculo = valor da operação (alíquota diferenciada)'),
     ('03', 'PIS 03 - Operacao Tributavel - Base de cálculo = quantidade vendida x alíquota por unidade de produto)'),
     ('04', 'PIS 04 - Operacao Tributavel - Tributacao Monofasica - (Aliquota Zero)'),
     ('06', 'PIS 06 - Operacao Tributavel - Aliquota Zero'),
@@ -178,7 +178,7 @@ PIS_TIPOS_CALCULO = IPI_TIPOS_CALCULO
 
 COFINS_TIPOS_TRIBUTACAO = (
     ('01', 'COFINS 01 - Operação Tributável - Base de cálculo = valor da operação alíquota normal (cumulativo/não cumulativo)'),
-    ('02', 'COFINS 02 - Operação Tributável - Base de cálculo = valor da operação (alíquota diferenciada)'), 
+    ('02', 'COFINS 02 - Operação Tributável - Base de cálculo = valor da operação (alíquota diferenciada)'),
     ('03', 'COFINS 03 - Operacao Tributavel - Base de cálculo = quantidade vendida x alíquota por unidade de produto)'),
     ('04', 'COFINS 04 - Operacao Tributavel - Tributacao Monofasica - (Aliquota Zero)'),
     ('06', 'COFINS 06 - Operacao Tributavel - Aliquota Zero'),

@@ -3,6 +3,7 @@
 import time
 import base64
 import hashlib
+
 from pynfe.entidades import NotaFiscal
 from pynfe.utils import etree, so_numeros, obter_municipio_por_codigo, \
     obter_pais_por_codigo, obter_municipio_e_codigo, formatar_decimal, \
@@ -91,9 +92,16 @@ class SerializacaoXML(Serializacao):
         raise Exception('Metodo nao implementado')
 
     def _serializar_url_qrcode(self, nota_fiscal, tag_raiz='infNFeSupl', retorna_string=True):
+        # timezone Brasília -03:00
+        tz = time.strftime("%z")
+        tz = "{}:{}".format(tz[:-2], tz[-2:])
+
         raiz = etree.Element(tag_raiz)
 
-        data = base64.b16encode(nota_fiscal.data_emissao.isoformat()).decode()
+        data = base64.b16encode(
+            nota_fiscal.data_emissao.strftime('%Y-%m-%dT%H:%M:%S') + tz
+        ).decode()
+        digest = 'BHIEmMv7zfc7MfCxfczdIQUXzOI='
         digest = base64.b16encode(digest).decode()
 
         try:
@@ -103,23 +111,23 @@ class SerializacaoXML(Serializacao):
 
         if cpf is None:
             url = 'chNFe={}&nVersao={}&tpAmb={}&dhEmi={}&vNF={}&vICMS={}&digVal={}&cIdToken={}'.format(
-                   nota_fiscal.nota_fiscal.identificador_unico.replace('NFe', ''),
+                   nota_fiscal.nfe_id.replace('NFe', ''),
                    VERSAO_QRCODE,
                    self._ambiente,
                    data.lower(),
-                   nota_fiscal.valor_total_nota,
-                   nota_fiscal.valor_icms,
+                   str('{:.2f}').format(nota_fiscal.totais_icms_total_nota),
+                   str('{:.2f}').format(nota_fiscal.totais_icms_total),
                    digest.lower(),
                    nota_fiscal.emitente.token)
         else:
             url = 'chNFe={}&nVersao={}&tpAmb={}&cDest={}&dhEmi={}&vNF={}&vICMS={}&digVal={}&cIdToken={}'.format(
-                   nota_fiscal.nota_fiscal.identificador_unico.replace('NFe', ''),
+                   nota_fiscal.nfe_id.replace('NFe', ''),
                    VERSAO_QRCODE,
                    self._ambiente,
                    cpf,
                    data.lower(),
-                   nota_fiscal.totais_icms_total_nota,
-                   nota_fiscal.totais_icms_total,
+                   str('{:.2f}').format(nota_fiscal.totais_icms_total_nota),
+                   str('{:.2f}').format(nota_fiscal.totais_icms_total),
                    digest.lower(),
                    nota_fiscal.emitente.token)
 
@@ -138,8 +146,8 @@ class SerializacaoXML(Serializacao):
                 url_qrcode = NFCE[nota_fiscal.uf.upper()]['HTTPS'] +\
                     NFCE[nota_fiscal.uf.upper()]['QR'] + url
 
-        print url_qrcode
-        etree.SubElement(raiz, 'qrCode').text = "<![CDATA[%s]]>" % (url_qrcode)
+        # print url_qrcode
+        etree.SubElement(raiz, 'qrCode').text = etree.CDATA(url_qrcode)
 
         if retorna_string:
             return etree.tostring(raiz, encoding="unicode", pretty_print=True)

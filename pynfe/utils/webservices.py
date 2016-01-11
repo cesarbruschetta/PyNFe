@@ -12,7 +12,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'AC': {
 	    	'QR': 'sefaznet.ac.gov.br/nfce?',
@@ -39,7 +41,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'PA': {
 	    	'STATUS': '',
@@ -48,7 +52,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'AP': {
 	    	'STATUS': '',
@@ -57,7 +63,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'TO': {
 	    	'STATUS': '',
@@ -66,7 +74,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'MA': {
 	    	'QR': 'nfce.sefaz.ma.gov.br/portal/consultarNFCe.jsp?',
@@ -85,14 +95,15 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'RN': {
 	    	#'QR': 'http://www.nfe.rn.gov.br/portal/consultarNFCe.jsp?',
 	    	'QR': 'http://nfce.set.rn.gov.br/consultarNFCe.aspx?',
 	    	'HTTPS': '',
 	    	'HOMOLOGACAO': ''
-	    	
 	    },
 	    'PB': {
 	    	'STATUS': '',
@@ -101,7 +112,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'PE': {
 	    	'STATUS': '',
@@ -110,7 +123,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'AL': {
 	    	'STATUS': '',
@@ -119,7 +134,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'SE': {
 	    	'QR': 'nfe.se.gov.br/portal/consultarNFCe.jsp?',
@@ -133,8 +150,10 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
-	    },	
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
+	    },
 	    'MG': {
 	    	'STATUS': '',
 	    	'AUTORIZACAO': '',
@@ -142,7 +161,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'ES': {
 	    	'STATUS': '',
@@ -151,7 +172,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'RJ': {
 	    	'STATUS': '',
@@ -160,7 +183,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': 'www4.fazenda.rj.gov.br/consultaNFCe/QRCode?',
+	    	'HTTPS': 'http://',
+	    	'HOMOLOGACAO': 'http://'
 	    },
 	    'SP': {
 	    	'STATUS': 'nfce.fazenda.sp.gov.br/ws/nfestatusservico2.asmx',
@@ -191,7 +216,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'RS': {
 	    	'STATUS': 'sefazrs.rs.gov.br/ws/NfeStatusServico/NfeStatusServico2.asmx',
@@ -211,7 +238,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    'MT': {
 	    	'QR': 'sefaz.mt.gov.br/nfce/consultanfce?',
@@ -225,7 +254,9 @@ NFCE = {
 	    	'CHAVE': '',
 	    	'INUTILIZACAO': '',
 	    	'EVENTOS': '',
-	    	'QR': ''
+	    	'QR': '',
+	    	'HTTPS': '',
+	    	'HOMOLOGACAO': ''
 	    },
 	    # RO, AC, RR, PA, AP, TO, MA, PI, RN, PB, AL, SE, BA, ES, RJ, GO, DF
 	    'SVRS': {
@@ -299,7 +330,7 @@ NFE = {
 	    	'CADASTRO': 'nfe.sefaz.ba.gov.br/webservices/nfenw/CadConsultaCadastro2.asmx',
 	    	'HTTPS': 'https://',
 	    	'HOMOLOGACAO': 'https://h'
-	    },	
+	    },
 	    'MG': {
 	    	'STATUS': 'nfe.fazenda.mg.gov.br/nfe2/services/NfeStatus2',
 	    	'AUTORIZACAO': 'nfe.fazenda.mg.gov.br/nfe2/services/NfeAutorizacao',
@@ -424,7 +455,7 @@ NFE = {
 
 # Nfs-e
 NFSE = {
-	# 
+	#
 	'BETHA': {
 		'AUTORIZACAO':'GerarNfse',
 		'CANCELAR':'CancelarNfse',
