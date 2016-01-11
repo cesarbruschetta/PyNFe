@@ -312,6 +312,9 @@ class NotaFiscal(Entidade):
     # - Processo Referenciado (lista 1 para * / ManyToManyField)
     processos_referenciados = None
 
+    # XML DA NOTA
+    xml_danfe = str()
+
     def __init__(self, *args, **kwargs):
         self.notas_fiscais_referenciadas = []
         self.produtos_e_servicos = []
@@ -420,7 +423,7 @@ class NotaFiscal(Entidade):
                 'cNF': self._codigo_numerico_aleatorio(),
                 }
 
-        Id =  "NFe%(uf)s%(ano)s%(mes)s%(cnpj)s%(mod)s%(serie)s%(nNF)s%(tpEmis)s%(cNF)s%(cDV)s"%{
+        Id = "NFe%(uf)s%(ano)s%(mes)s%(cnpj)s%(mod)s%(serie)s%(nNF)s%(tpEmis)s%(cNF)s%(cDV)s"%{
                 'uf': CODIGOS_ESTADOS[self.uf],
                 'ano': self.data_emissao.strftime('%y'),
                 'mes': self.data_emissao.strftime('%m'),

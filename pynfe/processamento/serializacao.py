@@ -101,6 +101,7 @@ class SerializacaoXML(Serializacao):
         data = base64.b16encode(
             nota_fiscal.data_emissao.strftime('%Y-%m-%dT%H:%M:%S') + tz
         ).decode()
+
         digest = 'BHIEmMv7zfc7MfCxfczdIQUXzOI='
         digest = base64.b16encode(digest).decode()
 
@@ -626,6 +627,9 @@ class SerializacaoXML(Serializacao):
                 etree.SubElement(info_ad, 'infAdFisco').text = nota_fiscal.informacoes_adicionais_interesse_fisco
             if nota_fiscal.informacoes_complementares_interesse_contribuinte:
                 etree.SubElement(info_ad, 'infCpl').text = nota_fiscal.informacoes_complementares_interesse_contribuinte
+
+        # Guarda o xml da nota
+        nota_fiscal.xml_danfe = etree.tostring(raiz, encoding="unicode", pretty_print=False)
 
         if retorna_string:
             return etree.tostring(raiz, encoding="unicode", pretty_print=True)
