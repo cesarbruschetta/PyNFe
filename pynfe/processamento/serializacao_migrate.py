@@ -102,7 +102,7 @@ class SerializacaoMigrate(Serializacao):
             etree.SubElement(endereco, 'cPais_dest').text = cliente.endereco_pais
             etree.SubElement(endereco, 'xPais_dest').text = obter_pais_por_codigo(cliente.endereco_pais)
             if cliente.endereco_telefone:
-                etree.SubElement(endereco, 'fone_dest').text = cliente.endereco_telefone
+                etree.SubElement(endereco, 'fone_dest').text = so_numeros(cliente.endereco_telefone)
 
         #Indicador da IE do destinatário: 1 – Contribuinte ICMSpagamento à vista; 2 – Contribuinte isento de inscrição; 9 – Não Contribuinte
         if cliente.indicador_ie == 9:
