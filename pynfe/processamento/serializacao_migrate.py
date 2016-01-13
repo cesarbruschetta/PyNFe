@@ -168,7 +168,7 @@ class SerializacaoMigrate(Serializacao):
         ### ICMS
         icms_item = etree.SubElement(imposto, 'ICMS')
         etree.SubElement(icms_item, 'orig').text = str(produto_servico.icms_origem)
-        etree.SubElement(icms_item, 'CST').text = '102'
+        etree.SubElement(icms_item, 'CST').text = str(produto_servico.icms_modalidade)
         etree.SubElement(icms_item, 'modBC').text = str(produto_servico.icms_modalidade_determinacao_bc)
         etree.SubElement(icms_item, 'vBC').text = str(produto_servico.icms_valor_base_calculo)
         etree.SubElement(icms_item, 'pICMS').text = str(produto_servico.icms_aliquota)
