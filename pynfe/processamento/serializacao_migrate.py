@@ -66,7 +66,8 @@ class SerializacaoMigrate(Serializacao):
         etree.SubElement(endereco, 'UF').text = emitente.endereco_uf
         etree.SubElement(endereco, 'CEP').text = so_numeros(emitente.endereco_cep)
         etree.SubElement(endereco, 'cPais').text = emitente.endereco_pais
-        etree.SubElement(endereco, 'xPais').text = obter_pais_por_codigo(emitente.endereco_pais)
+        etree.SubElement(endereco, 'xPais').text = obter_pais_por_codigo(
+            emitente.endereco_pais)
         if emitente.endereco_telefone:
             etree.SubElement(endereco, 'fone').text = emitente.endereco_telefone
         etree.SubElement(raiz, 'IE').text = emitente.inscricao_estadual
@@ -84,27 +85,49 @@ class SerializacaoMigrate(Serializacao):
         raiz = etree.Element(tag_raiz)
 
         # Dados do cliente (distinatario)
-        etree.SubElement(raiz, '%s_dest' %(cliente.tipo_documento)).text = so_numeros(cliente.numero_documento)
+        etree.SubElement(raiz, '%s_dest' % (cliente.tipo_documento)).text = so_numeros(
+            cliente.numero_documento)
         if not self._so_cpf:
             if cliente.razao_social:
                 etree.SubElement(raiz, 'xNome_dest').text = cliente.razao_social
-            endereco = etree.SubElement(raiz, 'enderDest')
-            etree.SubElement(endereco, 'xLgr_dest').text = cliente.endereco_logradouro
-            etree.SubElement(endereco, 'nro_dest').text = cliente.endereco_numero
-            if cliente.endereco_complemento:
-                etree.SubElement(endereco, 'xCpl').text = cliente.endereco_complemento
-            etree.SubElement(endereco, 'xBairro_dest').text = cliente.endereco_bairro
-            etree.SubElement(endereco, 'cMun_dest').text = obter_codigo_por_municipio(
-                cliente.endereco_municipio, cliente.endereco_uf)
-            etree.SubElement(endereco, 'xMun_dest').text = cliente.endereco_municipio
-            etree.SubElement(endereco, 'UF_dest').text = cliente.endereco_uf
-            etree.SubElement(endereco, 'CEP_dest').text = so_numeros(cliente.endereco_cep)
-            etree.SubElement(endereco, 'cPais_dest').text = cliente.endereco_pais
-            etree.SubElement(endereco, 'xPais_dest').text = obter_pais_por_codigo(cliente.endereco_pais)
-            if cliente.endereco_telefone:
-                etree.SubElement(endereco, 'fone_dest').text = so_numeros(cliente.endereco_telefone)
 
-        #Indicador da IE do destinatário: 1 – Contribuinte ICMSpagamento à vista; 2 – Contribuinte isento de inscrição; 9 – Não Contribuinte
+            if any([cliente.endereco_logradouro, cliente.endereco_numero,
+                    cliente.endereco_bairro, cliente.endereco_municipio,
+                    cliente.endereco_uf, cliente.endereco_cep]):
+
+                endereco = etree.SubElement(raiz, 'enderDest')
+                if cliente.endereco_logradouro:
+                    etree.SubElement(endereco, 'xLgr_dest').text = cliente.endereco_logradouro
+
+                if cliente.endereco_numero:
+                    etree.SubElement(endereco, 'nro_dest').text = cliente.endereco_numero
+
+                if cliente.endereco_complemento:
+                    etree.SubElement(endereco, 'xCpl').text = cliente.endereco_complemento
+
+                if cliente.endereco_bairro:
+                    etree.SubElement(endereco, 'xBairro_dest').text = cliente.endereco_bairro
+
+                if cliente.endereco_municipio and cliente.endereco_uf:
+                    etree.SubElement(endereco, 'xMun_dest').text = cliente.endereco_municipio
+                    etree.SubElement(endereco, 'UF_dest').text = cliente.endereco_uf
+                    etree.SubElement(endereco, 'cMun_dest').text = obter_codigo_por_municipio(
+                        cliente.endereco_municipio, cliente.endereco_uf)
+
+                if cliente.endereco_cep:
+                    etree.SubElement(endereco, 'CEP_dest').text = so_numeros(
+                        cliente.endereco_cep)
+
+                etree.SubElement(endereco, 'cPais_dest').text = cliente.endereco_pais
+                etree.SubElement(endereco, 'xPais_dest').text = obter_pais_por_codigo(
+                    cliente.endereco_pais)
+
+                if cliente.endereco_telefone:
+                    etree.SubElement(endereco, 'fone_dest').text = so_numeros(
+                        cliente.endereco_telefone)
+
+        # Indicador da IE do destinatário: 1 – Contribuinte ICMSpagamento à vista;
+        # 2 – Contribuinte isento de inscrição; 9 – Não Contribuinte
         if cliente.indicador_ie == 9:
             # 9 – Não Contribuinte
             etree.SubElement(raiz, 'indIEDest').text = '9'
@@ -135,13 +158,17 @@ class SerializacaoMigrate(Serializacao):
         #etree.SubElement(prod, 'NVE').text = ''
         etree.SubElement(prod, 'CFOP').text = produto_servico.cfop
         etree.SubElement(prod, 'uCOM').text = produto_servico.unidade_comercial
-        etree.SubElement(prod, 'qCOM').text = str(produto_servico.quantidade_comercial or 0)
-        etree.SubElement(prod, 'vUnCom').text = str('{:.2f}').format(produto_servico.valor_unitario_comercial or 0)
-        etree.SubElement(prod, 'vProd').text = str('{:.2f}').format(produto_servico.valor_total_bruto or 0)
+        etree.SubElement(prod, 'qCOM').text = str(
+            produto_servico.quantidade_comercial or 0)
+        etree.SubElement(prod, 'vUnCom').text = str('{:.2f}').format(
+            produto_servico.valor_unitario_comercial or 0)
+        etree.SubElement(prod, 'vProd').text = str(
+            '{:.2f}').format(produto_servico.valor_total_bruto or 0)
         etree.SubElement(prod, 'cEANTrib').text = produto_servico.ean_tributavel
         etree.SubElement(prod, 'uTrib').text = produto_servico.unidade_tributavel
         etree.SubElement(prod, 'qTrib').text = str(produto_servico.quantidade_tributavel)
-        etree.SubElement(prod, 'vUnTrib').text = str('{:.2f}').format(produto_servico.valor_unitario_tributavel)
+        etree.SubElement(prod, 'vUnTrib').text = str('{:.2f}').format(
+            produto_servico.valor_unitario_tributavel)
         """ Indica se valor do Item (vProd) entra no valor total da NF-e (vProd)
             0=Valor do item (vProd) não compõe o valor total da NF-e
             1=Valor do item (vProd) compõe o valor total da NF-e (vProd) (v2.0)
@@ -150,7 +177,7 @@ class SerializacaoMigrate(Serializacao):
 
         # etree.SubElement(prod, 'EXTIPI').text = ''
         etree.SubElement(prod, 'vSeg').text = '0.00'
-        etree.SubElement(prod, 'vDesc').text = '0.00'
+        etree.SubElement(prod, 'vDesc').text = str(produto_servico.valor_desconto)
         etree.SubElement(prod, 'vOutro_item').text = '0.00'
         etree.SubElement(prod, 'nTipoItem').text = '0'
         etree.SubElement(prod, 'dProd').text = '0'
@@ -163,24 +190,28 @@ class SerializacaoMigrate(Serializacao):
         # Lei da transparencia
         # Tributos aprox por item
         if produto_servico.valor_tributos_aprox:
-            etree.SubElement(imposto, 'vTotTrib').text = str('{:.2f}').format(produto_servico.valor_tributos_aprox)
+            etree.SubElement(imposto, 'vTotTrib').text = str(
+                '{:.2f}').format(produto_servico.valor_tributos_aprox)
 
-        ### ICMS
+        # ICMS
         icms_item = etree.SubElement(imposto, 'ICMS')
         etree.SubElement(icms_item, 'orig').text = str(produto_servico.icms_origem)
         etree.SubElement(icms_item, 'CST').text = str(produto_servico.icms_modalidade)
-        etree.SubElement(icms_item, 'modBC').text = str(produto_servico.icms_modalidade_determinacao_bc)
-        etree.SubElement(icms_item, 'vBC').text = str(produto_servico.icms_valor_base_calculo)
+        etree.SubElement(icms_item, 'modBC').text = str(
+            produto_servico.icms_modalidade_determinacao_bc)
+        etree.SubElement(icms_item, 'vBC').text = str(
+            produto_servico.icms_valor_base_calculo)
         etree.SubElement(icms_item, 'pICMS').text = str(produto_servico.icms_aliquota)
         etree.SubElement(icms_item, 'vICMS_icms').text = str(produto_servico.icms_valor)
 
-        ## PIS
+        # PIS
         pis = etree.SubElement(imposto, 'PIS')
         etree.SubElement(pis, 'CST_pis').text = produto_servico.pis_modalidade
 
-        ## COFINS
+        # COFINS
         cofins_item = etree.SubElement(imposto, 'COFINS')
-        etree.SubElement(cofins_item, 'CST_cofins').text = produto_servico.cofins_modalidade
+        etree.SubElement(
+            cofins_item, 'CST_cofins').text = produto_servico.cofins_modalidade
 
         if retorna_string:
             return etree.tostring(raiz, encoding="unicode", pretty_print=True)
@@ -204,9 +235,11 @@ class SerializacaoMigrate(Serializacao):
         etree.SubElement(ide, 'mod').text = str(nota_fiscal.modelo)
         etree.SubElement(ide, 'serie').text = nota_fiscal.serie
         etree.SubElement(ide, 'nNF').text = str(nota_fiscal.numero_nf)
-        etree.SubElement(ide, 'dhEmi').text = nota_fiscal.data_emissao.strftime('%Y-%m-%dT%H:%M:%S')
+        etree.SubElement(ide, 'dhEmi').text = nota_fiscal.data_emissao.strftime(
+            '%Y-%m-%dT%H:%M:%S')
         etree.SubElement(ide, 'fusoHorario').text = "{}:{}".format(tz[:-2], tz[-2:])
-        etree.SubElement(ide, 'tpNf').text = str(nota_fiscal.tipo_documento)  # 0=entrada 1=saida
+        etree.SubElement(ide, 'tpNf').text = str(
+            nota_fiscal.tipo_documento)  # 0=entrada 1=saida
         """ nfce suporta apenas operação interna
             Identificador de local de destino da operação 1=Operação interna;2=Operação interestadual;3=Operação com exterior.
         """
@@ -247,7 +280,8 @@ class SerializacaoMigrate(Serializacao):
 
         # Destinatário
         try:
-            raiz.append(self._serializar_cliente(nota_fiscal.cliente, modelo=nota_fiscal.modelo, retorna_string=False))
+            raiz.append(self._serializar_cliente(
+                nota_fiscal.cliente, modelo=nota_fiscal.modelo, retorna_string=False))
         except AttributeError as e:
             # NFC-e pode ser gerada sem destinatário
             if nota_fiscal.modelo == 65:
@@ -258,33 +292,49 @@ class SerializacaoMigrate(Serializacao):
         # Itens
         det = etree.SubElement(raiz, 'det')
         for num, item in enumerate(nota_fiscal.produtos_e_servicos):
-            detItem = self._serializar_produto_servico(item, modelo=nota_fiscal.modelo, retorna_string=False)
+            detItem = self._serializar_produto_servico(
+                item, modelo=nota_fiscal.modelo, retorna_string=False)
 
             det.append(detItem)
 
         # Totais
         total = etree.SubElement(raiz, 'total')
         icms_total = etree.SubElement(total, 'ICMStot')
-        etree.SubElement(icms_total, 'vBC_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_base_calculo)
-        etree.SubElement(icms_total, 'vICMS_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_total)
-        etree.SubElement(icms_total, 'vICMSDeson_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_desonerado)  # Valor Total do ICMS desonerado
-        etree.SubElement(icms_total, 'vBCST_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_st_base_calculo)
-        etree.SubElement(icms_total, 'vST_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_st_total)
-        etree.SubElement(icms_total, 'vProd_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_total_produtos_e_servicos)
-        etree.SubElement(icms_total, 'vFrete_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_total_frete)
-        etree.SubElement(icms_total, 'vSeg_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_total_seguro)
-        etree.SubElement(icms_total, 'vDesc_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_total_desconto)
+        etree.SubElement(icms_total, 'vBC_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_base_calculo)
+        etree.SubElement(icms_total, 'vICMS_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_total)
+        etree.SubElement(icms_total, 'vICMSDeson_ttlnfe').text = str('{:.2f}').format(
+            nota_fiscal.totais_icms_desonerado)  # Valor Total do ICMS desonerado
+        etree.SubElement(icms_total, 'vBCST_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_st_base_calculo)
+        etree.SubElement(icms_total, 'vST_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_st_total)
+        etree.SubElement(icms_total, 'vProd_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_total_produtos_e_servicos)
+        etree.SubElement(icms_total, 'vFrete_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_total_frete)
+        etree.SubElement(icms_total, 'vSeg_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_total_seguro)
+        etree.SubElement(icms_total, 'vDesc_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_total_desconto)
         etree.SubElement(icms_total, 'vII_ttlnfe').text = '0.00'
 
         # Tributos
-        etree.SubElement(icms_total, 'vIPI_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_total_ipi)
-        etree.SubElement(icms_total, 'vPIS_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_pis)
-        etree.SubElement(icms_total, 'vCOFINS_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_icms_cofins)
+        etree.SubElement(icms_total, 'vIPI_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_total_ipi)
+        etree.SubElement(icms_total, 'vPIS_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_pis)
+        etree.SubElement(icms_total, 'vCOFINS_ttlnfe').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_cofins)
 
-        etree.SubElement(icms_total, 'vOutro').text = str('{:.2f}').format(nota_fiscal.totais_icms_outras_despesas_acessorias)
-        etree.SubElement(icms_total, 'vNF').text = str('{:.2f}').format(nota_fiscal.totais_icms_total_nota)
+        etree.SubElement(icms_total, 'vOutro').text = str('{:.2f}').format(
+            nota_fiscal.totais_icms_outras_despesas_acessorias)
+        etree.SubElement(icms_total, 'vNF').text = str(
+            '{:.2f}').format(nota_fiscal.totais_icms_total_nota)
         if nota_fiscal.totais_tributos_aproximado:
-            etree.SubElement(icms_total, 'vTotTrib_ttlnfe').text = str('{:.2f}').format(nota_fiscal.totais_tributos_aproximado)
+            etree.SubElement(icms_total, 'vTotTrib_ttlnfe').text = str(
+                '{:.2f}').format(nota_fiscal.totais_tributos_aproximado)
 
         # Somente NFC-e
         """ Grupo obrigatório para a NFC-e, a critério da UF. Não informar para a NF-e (modelo 55). """
@@ -297,12 +347,15 @@ class SerializacaoMigrate(Serializacao):
         if nota_fiscal.informacoes_adicionais_interesse_fisco or nota_fiscal.informacoes_complementares_interesse_contribuinte:
             info_ad = etree.SubElement(raiz, 'infAdic')
             if nota_fiscal.informacoes_adicionais_interesse_fisco:
-                etree.SubElement(info_ad, 'infAdFisco').text = nota_fiscal.informacoes_adicionais_interesse_fisco
+                etree.SubElement(
+                    info_ad, 'infAdFisco').text = nota_fiscal.informacoes_adicionais_interesse_fisco
             if nota_fiscal.informacoes_complementares_interesse_contribuinte:
-                etree.SubElement(info_ad, 'infCpl').text = nota_fiscal.informacoes_complementares_interesse_contribuinte
+                etree.SubElement(
+                    info_ad, 'infCpl').text = nota_fiscal.informacoes_complementares_interesse_contribuinte
 
         # Guarda o xml da nota
-        nota_fiscal.xml_danfe = etree.tostring(raiz, encoding="unicode", pretty_print=False)
+        nota_fiscal.xml_danfe = etree.tostring(
+            raiz, encoding="unicode", pretty_print=False)
 
         if retorna_string:
             return etree.tostring(raiz, encoding="unicode", pretty_print=True)

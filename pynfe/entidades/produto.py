@@ -44,11 +44,14 @@ class Produto(Entidade):
     # - Valor Unitario Trib.
     valor_unitario_tributavel = Decimal()
 
-    # - indica se valor do item entra no valor total da nota fiscal 
-    # 0=Valor do item (vProd) não compõe o valor total da NF-e 
+    # - indica se valor do item entra no valor total da nota fiscal
+    # 0=Valor do item (vProd) não compõe o valor total da NF-e
     # 1=Valor do item (vProd) compõe o valor total da NF-e (vProd)
     ind_total = int()
-    
+
+    # valor do desconto
+    valor_desconto = Decimal
+
     # # Impostos
 
     # - IPI
