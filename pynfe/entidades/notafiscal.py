@@ -352,7 +352,7 @@ class NotaFiscal(Entidade):
         self.totais_icms_pis += obj.pis_valor
         self.totais_icms_cofins += obj.cofins_valor
         self.totais_icms_outras_despesas_acessorias += obj.outras_despesas_acessorias
-        # self.totais_icms_total_nota += obj.valor_total_bruto
+        self.totais_icms_total_nota += obj.valor_total_bruto - obj.desconto
         ## TODO calcular impostos aproximados
         #self.totais_tributos_aproximado += obj.tributos
         return obj
