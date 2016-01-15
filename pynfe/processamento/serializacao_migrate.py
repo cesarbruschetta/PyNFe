@@ -97,7 +97,8 @@ class SerializacaoMigrate(Serializacao):
 
                 endereco = etree.SubElement(raiz, 'enderDest')
                 if cliente.endereco_logradouro:
-                    etree.SubElement(endereco, 'xLgr_dest').text = cliente.endereco_logradouro
+                    etree.SubElement(
+                        endereco, 'xLgr_dest').text = cliente.endereco_logradouro
 
                 if cliente.endereco_numero:
                     etree.SubElement(endereco, 'nro_dest').text = cliente.endereco_numero
@@ -106,10 +107,12 @@ class SerializacaoMigrate(Serializacao):
                     etree.SubElement(endereco, 'xCpl').text = cliente.endereco_complemento
 
                 if cliente.endereco_bairro:
-                    etree.SubElement(endereco, 'xBairro_dest').text = cliente.endereco_bairro
+                    etree.SubElement(
+                        endereco, 'xBairro_dest').text = cliente.endereco_bairro
 
                 if cliente.endereco_municipio and cliente.endereco_uf:
-                    etree.SubElement(endereco, 'xMun_dest').text = cliente.endereco_municipio
+                    etree.SubElement(
+                        endereco, 'xMun_dest').text = cliente.endereco_municipio
                     etree.SubElement(endereco, 'UF_dest').text = cliente.endereco_uf
                     etree.SubElement(endereco, 'cMun_dest').text = obter_codigo_por_municipio(
                         cliente.endereco_municipio, cliente.endereco_uf)
@@ -178,7 +181,7 @@ class SerializacaoMigrate(Serializacao):
         # etree.SubElement(prod, 'EXTIPI').text = ''
         etree.SubElement(prod, 'vSeg').text = '0.00'
         etree.SubElement(prod, 'vDesc').text = str(produto_servico.desconto)
-        etree.SubElement(prod, 'vOutro_item').text = '0.00'
+        etree.SubElement(prod, 'vOutro_item').text = str(produto_servico.outras_despesas_acessorias)
         etree.SubElement(prod, 'nTipoItem').text = '0'
         etree.SubElement(prod, 'dProd').text = '0'
         etree.SubElement(prod, 'xPed_item').text = '0'
@@ -330,28 +333,32 @@ class SerializacaoMigrate(Serializacao):
 
         etree.SubElement(icms_total, 'vOutro').text = str('{:.2f}').format(
             nota_fiscal.totais_icms_outras_despesas_acessorias)
-        etree.SubElement(icms_total, 'vNF').text = str(
-            '{:.2f}').format(nota_fiscal.totais_icms_total_nota)
+        etree.SubElement(icms_total, 'vNF').text = str('{:.2f}').format(
+            nota_fiscal.totais_icms_total_nota)
         if nota_fiscal.totais_tributos_aproximado:
             etree.SubElement(icms_total, 'vTotTrib_ttlnfe').text = str(
                 '{:.2f}').format(nota_fiscal.totais_tributos_aproximado)
 
         # Somente NFC-e
-        """ Grupo obrigatório para a NFC-e, a critério da UF. Não informar para a NF-e (modelo 55). """
+        """ Grupo obrigatório para a NFC-e, a critério da UF.
+             Não informar para a NF-e (modelo 55). """
         if nota_fiscal.modelo == 65:
             # Transporte
             transp = etree.SubElement(raiz, 'transp')
             etree.SubElement(transp, 'modFrete').text = str(9)
 
         # Informações adicionais
-        if nota_fiscal.informacoes_adicionais_interesse_fisco or nota_fiscal.informacoes_complementares_interesse_contribuinte:
+        if nota_fiscal.informacoes_adicionais_interesse_fisco or\
+                nota_fiscal.informacoes_complementares_interesse_contribuinte:
             info_ad = etree.SubElement(raiz, 'infAdic')
             if nota_fiscal.informacoes_adicionais_interesse_fisco:
                 etree.SubElement(
-                    info_ad, 'infAdFisco').text = nota_fiscal.informacoes_adicionais_interesse_fisco
+                    info_ad, 'infAdFisco'
+                ).text = nota_fiscal.informacoes_adicionais_interesse_fisco
             if nota_fiscal.informacoes_complementares_interesse_contribuinte:
                 etree.SubElement(
-                    info_ad, 'infCpl').text = nota_fiscal.informacoes_complementares_interesse_contribuinte
+                    info_ad, 'infCpl'
+                ).text = nota_fiscal.informacoes_complementares_interesse_contribuinte
 
         # Guarda o xml da nota
         nota_fiscal.xml_danfe = etree.tostring(
