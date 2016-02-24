@@ -100,7 +100,7 @@ def obter_codigo_por_municipio(municipio, uf):
         codigo_uf = flags.CODIGOS_ESTADOS.get(uf)
         municipios = carregar_arquivo_municipios(codigo_uf, True)
 
-    return municipios[normalizar_municipio(municipio)]
+    return municipios.get(normalizar_municipio(municipio), '')
 
 
 # @memoize
@@ -135,6 +135,8 @@ def obter_municipio_e_codigo(dados, uf):
     return cod, municipio
 
 # @memoize
+
+
 def extrair_tag(root):
     return root.tag.split('}')[-1]
 
@@ -155,4 +157,4 @@ def obter_uf_por_codigo(codigo_uf):
 
 
 def remover_acentos(txt):
-    return normalize('NFKD', txt).encode('ASCII','ignore').decode('ASCII')
+    return normalize('NFKD', txt).encode('ASCII', 'ignore').decode('ASCII')
