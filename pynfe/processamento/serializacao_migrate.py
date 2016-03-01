@@ -181,7 +181,8 @@ class SerializacaoMigrate(Serializacao):
         # etree.SubElement(prod, 'EXTIPI').text = ''
         etree.SubElement(prod, 'vSeg').text = '0.00'
         etree.SubElement(prod, 'vDesc').text = str(produto_servico.desconto)
-        etree.SubElement(prod, 'vOutro_item').text = str(produto_servico.outras_despesas_acessorias)
+        etree.SubElement(prod, 'vOutro_item').text = str(
+            produto_servico.outras_despesas_acessorias)
         etree.SubElement(prod, 'nTipoItem').text = '0'
         etree.SubElement(prod, 'dProd').text = '0'
         etree.SubElement(prod, 'xPed_item').text = '0'
@@ -215,6 +216,18 @@ class SerializacaoMigrate(Serializacao):
         cofins_item = etree.SubElement(imposto, 'COFINS')
         etree.SubElement(
             cofins_item, 'CST_cofins').text = produto_servico.cofins_modalidade
+
+        if retorna_string:
+            return etree.tostring(raiz, encoding="unicode", pretty_print=True)
+        else:
+            return raiz
+
+    def _serializar_pagamento(self, pagamento, modelo, tag_raiz='pagItem', retorna_string=True):
+        raiz = etree.Element(tag_raiz)
+
+        etree.SubElement(raiz, 'tPag').text = pagamento.forma_pagamento
+        etree.SubElement(raiz, 'vPag').text = str(
+            '{:.2f}').format(pagamento.valor_pago or 0)
 
         if retorna_string:
             return etree.tostring(raiz, encoding="unicode", pretty_print=True)
@@ -346,6 +359,14 @@ class SerializacaoMigrate(Serializacao):
             # Transporte
             transp = etree.SubElement(raiz, 'transp')
             etree.SubElement(transp, 'modFrete').text = str(9)
+
+        # Pagamentos
+        pag = etree.SubElement(raiz, 'pag')
+        for num, item in enumerate(nota_fiscal.pagamentos):
+            pagItem = self._serializar_pagamento(
+                item, modelo=nota_fiscal.modelo, retorna_string=False)
+
+            pag.append(pagItem)
 
         # Informações adicionais
         if nota_fiscal.informacoes_adicionais_interesse_fisco or\

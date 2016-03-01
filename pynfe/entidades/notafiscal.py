@@ -312,6 +312,9 @@ class NotaFiscal(Entidade):
     # - Processo Referenciado (lista 1 para * / ManyToManyField)
     processos_referenciados = None
 
+    # Pagamentos
+    pagamentos = None
+
     # XML DA NOTA
     xml_danfe = str()
 
@@ -322,6 +325,7 @@ class NotaFiscal(Entidade):
         self.duplicatas = []
         self.observacoes_contribuinte = []
         self.processos_referenciados = []
+        self.pagamentos = []
 
         super(NotaFiscal, self).__init__(*args, **kwargs)
 
@@ -379,6 +383,12 @@ class NotaFiscal(Entidade):
         u"""Adiciona uma instancia de Processo Referenciado"""
         obj = NotaFiscalProcessoReferenciado(**kwargs)
         self.processos_referenciados.append(obj)
+        return obj
+
+    def adicionar_pagamento(self, **kwargs):
+        u"""Adiciona uma instancia de Processo Referenciado"""
+        obj = NotaFiscalPagamento(**kwargs)
+        self.pagamentos.append(obj)
         return obj
 
     def _codigo_numerico_aleatorio(self):
@@ -942,3 +952,21 @@ class NotaFiscalServico(Entidade):
 
     def __str__(self):
         return ' '.join([str(self.identificador)])
+
+class NotaFiscalPagamento(Entidade):
+    # - Dados
+    #  - Forma de Pagamento (obrigatorio)
+    #     01-Dinheiro
+    #     02-Cheque
+    #     03-Cartão de Crédito
+    #     04-Cartão de Débito
+    #     05-Crédito Loja
+    #     10-Vale Alimentação
+    #     11-Vale Refeição
+    #     12-Vale Presente
+    #     13-Vale Combustível
+    #     99-Outros
+    forma_pagamento = str()
+
+    #  - Valor Pago (obrigatorio)
+    valor_pago = Decimal()
