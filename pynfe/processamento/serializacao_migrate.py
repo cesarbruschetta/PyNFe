@@ -180,8 +180,9 @@ class SerializacaoMigrate(Serializacao):
 
         # etree.SubElement(prod, 'EXTIPI').text = ''
         etree.SubElement(prod, 'vSeg').text = '0.00'
-        etree.SubElement(prod, 'vDesc').text = str(produto_servico.desconto)
-        etree.SubElement(prod, 'vOutro_item').text = str(
+        etree.SubElement(prod, 'vDesc').text = str('{:.2f}').format(
+            produto_servico.desconto)
+        etree.SubElement(prod, 'vOutro_item').text = str('{:.2f}').format(
             produto_servico.outras_despesas_acessorias)
         etree.SubElement(prod, 'nTipoItem').text = '0'
         etree.SubElement(prod, 'dProd').text = '0'
