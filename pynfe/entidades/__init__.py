@@ -6,6 +6,6 @@ from .notafiscal import NotaFiscal
 from .lotes import LoteNotaFiscal
 from .fonte_dados import _fonte_dados
 from .certificado import CertificadoA1
-from .evento import EventoCancelarNota, EventoCancelarNotaMigrate
+from .evento import EventoCancelarNota, EventoCancelarNotaMigrate, EventoInutilizacaoNotaMigrate
 from .servico import Servico
 from .consulta_migrate import ConsultaMigrate

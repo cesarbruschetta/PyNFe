@@ -77,3 +77,21 @@ class EventoCancelarNotaMigrate(Evento):
     # - Informar a justificativa do cancelamento (min 15 max 255 caracteres)
     justificativa = str()
 
+
+class EventoInutilizacaoNotaMigrate(Evento):
+
+    # - CNPJ (obrigatorio)
+    cnpj = str()
+
+    # Numero Inicial nota fiscal
+    numero_inicial = str()
+
+    # Numero Final nota fiscal
+    numero_final = str()
+
+    # serie nota fiscal
+    serie = str()
+
+    # - Informar a justificativa do cancelamento (min 15 max 255 caracteres)
+    justificativa = unicode()
+

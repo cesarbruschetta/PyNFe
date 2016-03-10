@@ -3,9 +3,8 @@
 import time
 
 from pynfe.entidades import EventoCancelarNotaMigrate
-from pynfe.utils import etree, so_numeros, \
-    obter_pais_por_codigo, obter_codigo_por_municipio
-from pynfe.utils.flags import CODIGOS_ESTADOS, VERSAO_PADRAO
+from pynfe.utils import etree, so_numeros
+from pynfe.utils.flags import VERSAO_PADRAO
 from pynfe.processamento.serializacao import Serializacao
 
 
