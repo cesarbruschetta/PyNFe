@@ -160,6 +160,10 @@ class SerializacaoMigrate(Serializacao):
         # Codificação opcional que detalha alguns NCM. Formato: duas letras maiúsculas e 4 algarismos. Se a mercadoria se enquadrar em mais de uma codificação, informar até 8 codificações principais.
         #etree.SubElement(prod, 'NVE').text = ''
         etree.SubElement(prod, 'CFOP').text = produto_servico.cfop
+
+        if produto_servico.cest:
+            etree.SubElement(prod, 'CEST').text = produto_servico.cest
+
         etree.SubElement(prod, 'uCOM').text = produto_servico.unidade_comercial
         etree.SubElement(prod, 'qCOM').text = str(
             produto_servico.quantidade_comercial or 0)

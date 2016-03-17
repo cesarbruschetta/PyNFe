@@ -498,6 +498,9 @@ class NotaFiscalProduto(Entidade):
     #  - CFOP (obrigatorio)
     cfop = str()
 
+    #  - CEST
+    cest = str()
+
     #  - Genero
     genero = str()
 
