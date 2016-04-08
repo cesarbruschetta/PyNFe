@@ -234,6 +234,14 @@ class SerializacaoMigrate(Serializacao):
         etree.SubElement(raiz, 'vPag').text = str(
             '{:.2f}').format(pagamento.valor_pago or 0)
 
+        if pagamento.forma_pagamento in ['04', '03']:
+            # Pagamento em Debito e Credito
+            card = etree.SubElement(raiz, 'card')
+            etree.SubElement(card, 'tipoIntegracao').text = '2'
+            etree.SubElement(card, 'CNPJ_card').text = ''
+            etree.SubElement(card, 'tBand').text = ''
+            etree.SubElement(card, 'cAut').text = ''
+
         if retorna_string:
             return etree.tostring(raiz, encoding="unicode", pretty_print=True)
         else:
