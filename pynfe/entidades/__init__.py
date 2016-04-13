@@ -9,3 +9,4 @@ from .certificado import CertificadoA1
 from .evento import EventoCancelarNota, EventoCancelarNotaMigrate, EventoInutilizacaoNotaMigrate
 from .servico import Servico
 from .consulta_migrate import ConsultaMigrate
+from .empresa import Empresa
