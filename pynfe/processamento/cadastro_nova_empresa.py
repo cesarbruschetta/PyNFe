@@ -150,7 +150,7 @@ class SerializacaoCadastroEmpresa(Serializacao):
 
         item = etree.SubElement(raiz, 'LicenciamentoItem')
         etree.SubElement(item, 'Modulo').text = 'NFCe'
-        etree.SubElement(item, 'Modelo').text = '1'
+        etree.SubElement(item, 'Modelo').text = '2'
 
         if retorna_string:
             return etree.tostring(raiz, encoding="unicode", pretty_print=True)
@@ -161,8 +161,8 @@ class SerializacaoCadastroEmpresa(Serializacao):
                                 retorna_string=True):
         raiz = etree.Element(tag_raiz)
 
-        etree.SubElement(raiz, 'ArquivoPFX').text = ''
-        etree.SubElement(raiz, 'Senha').text = ''
+        etree.SubElement(raiz, 'ArquivoPFX').text = empresa.certificado_pfx
+        etree.SubElement(raiz, 'Senha').text = empresa.senha_certificado
 
         if retorna_string:
             return etree.tostring(raiz, encoding="unicode", pretty_print=True)

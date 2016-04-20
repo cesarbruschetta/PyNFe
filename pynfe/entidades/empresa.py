@@ -24,3 +24,8 @@ class Empresa(Emitente):
     # Senha
     user_root_senha = str()
 
+    # Certificado em base64
+    certificado_pfx = str()
+
+    # Senha do certificado
+    senha_certificado = str()
