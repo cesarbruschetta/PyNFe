@@ -31,8 +31,8 @@ class SerializacaoMigrate(Serializacao):
                 return etree.tostring(raiz, encoding="unicode", pretty_print=False)
             else:
                 return raiz
-        except Exception as e:
-            raise e
+        except Exception:
+            raise
 
         finally:
             if limpar:
