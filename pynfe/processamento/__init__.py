@@ -4,4 +4,4 @@ from .validacao import Validacao
 from .assinatura import AssinaturaA1
 from .comunicacao import ComunicacaoSefaz
 from .danfe import DanfeNfce
-from .serializacao_consulta import SerializacaoConsultaMigrate
+from .serializacao_consulta import SerializacaoConsultaMigrate, SerializacaoConsultaPuloNumeracao

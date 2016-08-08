@@ -8,5 +8,5 @@ from .fonte_dados import _fonte_dados
 from .certificado import CertificadoA1
 from .evento import EventoCancelarNota, EventoCancelarNotaMigrate, EventoInutilizacaoNotaMigrate
 from .servico import Servico
-from .consulta_migrate import ConsultaMigrate
+from .consulta_migrate import ConsultaMigrate, ConsultaPuloNumeracao
 from .empresa import Empresa

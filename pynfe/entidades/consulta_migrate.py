@@ -14,3 +14,16 @@ class ConsultaMigrate(Entidade):
     cnpj = str()
 
     serie = str()
+
+
+class ConsultaPuloNumeracao(Entidade):
+
+    modelo_documento = str()
+
+    cnpj = str()
+
+    serie = str()
+
+    data_inicial = None
+
+    data_final = None
