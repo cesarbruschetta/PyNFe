@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from pynfe.entidades import ConsultaMigrate
+from pynfe.entidades import ConsultaMigrate, ConsultaPuloNumeracao
 from pynfe.utils import etree, so_numeros
 from pynfe.utils.flags import VERSAO_PADRAO
 from pynfe.processamento.serializacao import Serializacao
@@ -28,8 +28,8 @@ class SerializacaoConsultaMigrate(Serializacao):
                 return etree.tostring(raiz, encoding="unicode", pretty_print=False)
             else:
                 return raiz
-        except Exception as e:
-            raise e
+        except:
+            raise
 
         finally:
             if limpar:
@@ -63,7 +63,7 @@ class SerializacaoConsultaPuloNumeracao(Serializacao):
         """
         try:
             # Carrega lista de Notas Fiscais
-            consultas = self._fonte_dados.obter_lista(_classe=ConsultaMigrate,
+            consultas = self._fonte_dados.obter_lista(_classe=ConsultaPuloNumeracao,
                                                       **kwargs)
 
             for consulta in consultas:
@@ -73,8 +73,8 @@ class SerializacaoConsultaPuloNumeracao(Serializacao):
                 return etree.tostring(raiz, encoding="unicode", pretty_print=False)
             else:
                 return raiz
-        except Exception as e:
-            raise e
+        except:
+            raise
 
         finally:
             if limpar:
