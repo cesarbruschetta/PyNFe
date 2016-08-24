@@ -15,6 +15,16 @@ class ConsultaMigrate(Entidade):
 
     serie = str()
 
+    numero_inicial = str()
+
+    numero_final = str()
+
+    chave_acesso = str()
+
+    data_inicial = None
+
+    data_final = None
+
 
 class ConsultaPuloNumeracao(Entidade):
 

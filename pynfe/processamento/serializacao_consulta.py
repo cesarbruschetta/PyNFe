@@ -42,8 +42,23 @@ class SerializacaoConsultaMigrate(Serializacao):
         etree.SubElement(raiz, 'ModeloDocumento').text = 'NFCe'
         etree.SubElement(raiz, 'Versao').text = self._versao
         etree.SubElement(raiz, 'tpAmb').text = str(self._ambiente)
+        etree.SubElement(raiz, 'CnpjEmpresa').text = so_numeros(consulta.cnpj)
         etree.SubElement(raiz, 'CnpjEmissor').text = so_numeros(consulta.cnpj)
+
+        if consulta.numero_inicial:
+            etree.SubElement(raiz, 'NumeroInicial').text = str(consulta.numero_inicial)
+        if consulta.numero_final:
+            etree.SubElement(raiz, 'NumeroFinal').text = str(consulta.numero_final)
         etree.SubElement(raiz, 'Serie').text = str(consulta.serie)
+
+        if consulta.chave_acesso:
+            etree.SubElement(raiz, 'ChaveAcesso').text = str(consulta.chave_acesso)
+
+        if consulta.data_inicial and consulta.data_final:
+            etree.SubElement(
+                raiz, 'DataEmissaoInicial').text = consulta.data_inicial.strftime("%Y-%m-%d")
+            etree.SubElement(
+                raiz, 'DataEmissaoFinal').text = consulta.data_final.strftime("%Y-%m-%d")
 
         if retorna_string:
             return etree.tostring(raiz, encoding="unicode", pretty_print=True)
